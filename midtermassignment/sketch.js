@@ -82,14 +82,17 @@ function run(s){ //moving the sprite animation
   if (counter == 1){ //changing the background depending on the conditions
     image(b4, width/2, height/2);
     bounce(2.2, 2.8);
+    s+=10;
   }
   else if (counter == 2){
     image(b3, width/2, height/2);
     bounce(3.2, 3.8);
+    s+=10;
   }
   else if (counter == 3){
     image(b2, width/2, height/2);
     bounce(4.2, 4.8);
+    s+=10;
   }
   else if (counter >= 4){
     image(b1, width/2, height/2);
