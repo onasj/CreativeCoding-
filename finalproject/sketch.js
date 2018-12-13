@@ -1,9 +1,9 @@
 var apikey;
 var baseurl;
-var cityname;
+var cityname = "";
 var wdata;
 var weather;
-var weight;
+var weight = "";
 var temperature;
 var fahrenheit = 0;
 //var conditions = ["Clear", "Clouds", "Rain", "Snow", "Mist", "Fog", "Haze"];
@@ -50,6 +50,9 @@ function preload() {
   //sound for rain and snow;
   rainsound = loadSound("assets/rainsound.mp3");
   snowsound = loadSound("assets/snowsound.mp3");
+  bcloudsound = loadSound("assets/bcloudsound.mp3");
+  cloudsound = loadSound("assets/cloudsound.wav");
+  font = loadFont('assets/thefont.ttf');
 
 
 }
@@ -65,6 +68,7 @@ function setup() {
   button.mousePressed(userinput);
   createCanvas(800,600);
   background(65,105,225);
+  textFont(font);
 }
 
 
@@ -85,9 +89,17 @@ function draw() {
   		push();
   		translate(150,200);
   		rotate(frameCount/10);
-  		image(sunimage, 150, 200, 250, 250);
+  		image(sunimage, 0, 0, 250, 250);
   		pop();
   	}
+    if (hour() > 6){
+      image(dayimage, width/2, height/2, 800, 600);
+      push();
+      translate(150,200);
+      rotate(frameCount/10);
+      image(sunimage, 0, 0, 250, 250);
+      pop();
+    }
   	if (hour() < 6){
   		image(nightimage, width/2, height/2, 800, 600);
   		push();
@@ -96,7 +108,7 @@ function draw() {
   		image(moonimage, 0, 0, 250, 250);
   		pop();
   	}
- 	if (hour() > 18){
+ 	  if (hour() > 18){
   		image(nightimage, width/2, height/2, 800, 600);
   		push();
   		translate(150,200);
@@ -138,7 +150,6 @@ function draw() {
   		}
   	}
   	else if (weather == "Drizzle"){
-      //rainsound.play();
   		for(var j = 0; j < bcloudarray.length; j++){
   			bcloudarray[j].move();
   			bcloudarray[j].display();
@@ -169,6 +180,9 @@ function draw() {
   			rsnowarray[k].display();
   		}
   	}
+    text('Location:'+ cityname, 70, 160);
+    text('Weather:'+ weather, 70, 190);
+    text('Temp:'+ int(fahrenheit), 70, 220);
 }
 
 
@@ -229,22 +243,23 @@ function gotData(wdata){ //callback function from loadJSON
 	  rsnowarray[i] = new snow(random(480, 530), random(270, height), rsside, rsspeed);
 
 	}
-  cn = createP('Location:'+ cityname);
-  cn.position(80,130);
+
+  cn = createP('________________');
+  cn.position(70,130);
   cn.style('outline-style','double');
   cn.style('outline-color','#200');
   cn.style('outline-width','thick');
   cn.style('text-decoration','overline');
   cn.style('font-style', 'italic');
-  wn = createP('Weather:'+ weight);
-  wn.position(80,160);
+  wn = createP('________________');
+  wn.position(70,160);
   wn.style('outline-style','double');
   wn.style('outline-color','#200');
   wn.style('outline-width','thick');
   wn.style('text-decoration','overline');
   wn.style('font-style', 'italic');
-  tn = createP('Temp:'+ int(fahrenheit));
-  tn.position(80,190);
+  tn = createP('________________');
+  tn.position(70,190);
   tn.style('outline-style','double');
   tn.style('outline-color','#200');
   tn.style('outline-width','thick');
@@ -277,6 +292,7 @@ function wcloud(x,y,s,spd){
 		this.x += this.spd;
 		if (this.x - this.s >= width){
 			this.x = -this.s;
+      cloudsound.play();
 		}
 
 	}
@@ -296,6 +312,7 @@ function bcloud(x,y,s,spd){
 		this.x += this.spd;
 		if (this.x - this.s >= width){
 			this.x = -this.s;
+      bcloudsound.play();
 		}
 
 	}
@@ -316,6 +333,7 @@ function rain(x,y,s,spd){
 		this.y += this.spd;
 		if (this.y - this.s >= height){
 			this.y = 250;
+      rainsound.play();
 		}
 	}
 	this.display = function(){
@@ -334,6 +352,7 @@ function snow(x,y,s,spd){
 		this.y += this.spd;
 		if (this.y - this.s >= height){
 			this.y = 270;
+      snowsound.play();
 		}
 	}
 	this.display = function(){
