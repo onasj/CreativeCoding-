@@ -28,6 +28,10 @@ var rsspeed = 0;
 var imagestate = 0;
 var w = 6; //default for amount of weather
 var c = 6;
+var rainsound;
+var snowsound;
+var cloudsound;
+var bcloudsound;
 
 
 function preload() {
@@ -334,6 +338,7 @@ function rain(x,y,s,spd){
 		if (this.y - this.s >= height){
 			this.y = 250;
       rainsound.play();
+      rainsound.setVolume(0.1);
 		}
 	}
 	this.display = function(){
@@ -353,6 +358,7 @@ function snow(x,y,s,spd){
 		if (this.y - this.s >= height){
 			this.y = 270;
       snowsound.play();
+      snowsound.setVolume(0.05);
 		}
 	}
 	this.display = function(){
